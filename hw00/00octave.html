@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<!--
+<script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+<script type="text/javascript">
+LatexIT.add('p',true);
+</script>
+-->
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+      },
+      "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full"></script>
+
+	
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Project 0: Octave Basics</title>
+<link href="projects.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h2>Project 0: Octave Basics</h2>
+
+
+<!--announcements-->
+<blockquote>
+    <center>
+    <img src="logo.png" width="200px" />
+    </center>
+      <p><cite><center>Optimize your breakfast:<br>
+		  ditch Fruit Loops for Chex!
+      </center></cite></p>
+</blockquote>
+
+<h3>Introduction</h3>
+
+<p>In this project, you will write a function to compute Euclidean distances between sets of vectors. But before you get started, you need to check out your code onto whatever computer you want to use. </p>
+
+<p><strong>How to check out your code:</strong> The first thing you need to do is obtain your code from the server. We use <a href="https://subversion.apache.org">subversion</a>, which should be installed on your Mac OSX or Linux computer as <code>svn</code>. (If you have Windows you can use <a href="http://tortoisesvn.net">TortoiseSVN</a> or install Linux in a <a href="https://www.virtualbox.org/wiki/Downloads">Virtual Box</a>.) <br> 
+To check out your code with the following command line call:
+	<pre>svn commit checkout YOURNETID@en-cs-cs4780.coecis.cornell.edu:/opt/cs4780/repos/YOURNETID</pre>
+Of course you must substitute YOURNETID with your Cornell NetID. This should prompt you for your password and then populate your directory with files. If you are unable to login using your Cornell NetID, post it on <a href="https://piazza.com/class/icxgflcnpra3ko">Piazza</a>. 
+In the future whenever you want to see if any new projects are available, simply call
+<pre>svn update</pre>
+
+
+<p>The code for this project (<code>project0</code>) consists of several text files, some of which you will need to read and understand in order to complete the assignment, and some of which you can ignore.
+
+<table border="0" cellpadding="10">
+  <tr><td colspan="2"><b>Files you'll edit:</b></td></tr>
+  
+  
+<tr><td><code>  codename.txt</code></td><td>This file contains some codename that represents you on the leaderboard. You can change your codename anytime you want, but please avoid offensive or annoying names (e.g. no names of other class mates, no swear words, no inappropriate body parts, urls, javascripts,...) </td></tr>
+<tr><td><code>  partners.txt</code></td><td>If you work in a group, this file should contain the two NetIDs of you and your group partner. These should be in two separate lines. There should be nothing else in this file. Please make sure that your partner also puts you in his/her <code>partners.txt</code> file, as <strong>project partnerships must be mutual</strong>.  </td></tr>
+<tr><td><code>  innerproduct.m</code></td><td>Computes all pairwise inner-products between two sets of vectors.</td></tr>
+<tr><td><code>  l2distance.m</code></td><td>Computes all pairwise squared $l_2$ distances between vectors.</td></tr>
+<tr><td><code>  l2distanceSlow.m</code></td><td>A horrible implementation of <code>l2distance.m</code> (please do not show to minors or people who get traumatized easily.)</td></tr>
+
+  
+
+  <tr><td colspan="2"><b>Files you might want to look at:</b></td></tr>
+
+<tr><td><code>  hw0tests.m</code></td><td>Runs several unit tests to find obvious bugs in your implementation.</td></tr>
+<tr><td><code>  hw0tictoc.m</code></td><td>Runs and times your code. It performs binary search to find out how many distance computations you can perform in 1s.</td></tr>
+
+
+  
+
+</table>
+<p><strong>How to submit:</strong> You can commit your code with subversion, with the command line<br> 
+	<pre>svn commit -m "some meaningful comment"</pre>
+		 where you should substitute "some meaningful comment" with something that describes what you did. You can submit as often as you want until the deadline. Please be aware that the last submission determines your grade. 
+
+<p><strong>Evaluation:</strong> Your code will be autograded for technical
+correctness. Please <em>do not</em> change the names of any provided functions or classes within the code, or you will wreak havoc on the autograder. However, the correctness of your implementation -- not the autograder's output -- will be the final judge of your score.  If necessary, we will review and grade assignments individually to ensure that you receive due credit for your work.
+
+<p><strong>Academic Dishonesty:</strong> We will be checking your code against other submissions in the class for logical redundancy. If you copy someone else's code and submit it with minor changes, we will know. These cheat detectors are quite hard to fool, so please don't try. We trust you all to submit your own work only; <em>please</em> don't let us down. If you do, we will pursue the strongest consequences available to us.
+
+<p><strong>Getting Help:</strong> You are not alone!  If you find yourself stuck  on something, contact the course staff for help.  Office hours, section, and the <a href="https://piazza.com/class/icxgflcnpra3ko">Piazza</a> are there for your support; please use them.  If you can't make our office hours, let us know and we will schedule more.  We want these projects to be rewarding and instructional, not frustrating and demoralizing.  But, we don't know when or how to help unless you ask.  
+
+<h3> Euclidean distances in Octave </h3>
+
+<p>Many machine learning algorithms access their input data primarily through pairwise distances. It is therefore important that we have a fast function that computes pairwise (Euclidean) distances of input vectors. Assume we have $n$ data vectors $\vec x_1,\dots,\vec x_n\in{\cal R}^d$ and $m$ vectors $\vec z_1,\dots,z_m\in{\cal R}^d$. And let us define two matrices $X=[\vec x_1,\dots,\vec x_n]\in{\cal R}^{d\times n}$, where the $i^{th}$ column is a vector $\vec x_i$ and similarly $Z=[\vec z_1,\dots,\vec z_m]$. Our distance function takes as input the two matrices $X$ and $Z$ and outputs a matrix $D\in{\cal R}^{n\times m}$, where 
+	$$D_{ij}=\sqrt{(\vec x_i-\vec z_j)^\top (\vec x_i-\vec z_j)}.$$
+</p>
+
+
+
+<h4> How not to program in Octave </h4>
+
+<p> A naive Octave implementation of such a distance function would look like this:
+<pre>function D=l2distanceSlow(X,Z)
+[d,n]=size(X); % dimension of X
+[~,m]=size(Z); % dimension of Z
+D=zeros(n,m); % allocate memory for the output matrix
+ for i=1:n % loop over vectors in X
+	for j=1:m % loop over vectors in Z
+		D(i,j)=0.0; 
+		for k=1:d % loop over dimensions
+			D(i,j)=D(i,j)+(X(k,i)-Z(k,j))^2; % compute l2-distance between the ith and jth vector
+		end;
+		D(i,j)=sqrt(D(i,j)); % take square root
+	end;
+ end;
+</pre>
+Please read through the code carefully and make sure you understand it. It is perfectly correct and will produce the correct result ... eventually. To see what is wrong, run the following program in the Octave console:
+<pre>
+	X=rand(100,100);
+	Z=rand(100,50);
+	tic;D=l2distanceSlow(X,Z);toc 
+</pre>
+This code defines some random data in $X$ and $Z$ and computes the corresponding distance matrix $D$. The <em>tic,toc</em> statements time how long this takes. On my laptop it takes about 30 seconds. This is way too slow to compute 5000 distances!!! If I were to compute the distances between all 2007 test and 7291 test images in our digit classification data set (next homework), it would take over a day!!
+The problem is that the distance function uses a programming style that is well suited for C++ or Java, but  <strong>not Octave!!</strong> 
+</p>
+
+<p> What is the problem? Octave is an interpreted language with a lot of slow execution overhead. This means you have to pay dearly for every command you execute. In our example we have three nested loops and call the inner most line many many times. This means almost our entire running time is spent in execution overhead.
+ <strong>As a general rule, you should avoid tight loops at all cost.</strong></p>
+
+<h4> How to program in Octave </h4>
+
+<p>Although there is an execution overhead per line in Octave, matrix operations are extremely optimized and very fast. In order to become a successful Octave programmer, you need to free yourself from the "for-loop" thinking and start thinking in terms of matrix operations. Octave can be very fast, if almost all the time is spent in a few heavy duty matrix operations. In this assignment you will do this, and transform the function above into a few matrix operations <em>without any loops at all.</em> </p> 
+
+
+
+
+<!--
+><p><strong>Inner Loop:</strong> We can first get rid of the inner loop (which loops over the dimensionality). We can collapse this into a single expression
+	<pre>D(i,j)=sqrt(sum((X(:,i)-Z(:,j)).^2));</pre>
+If you plug-in this line instead of the most inner loop and run the <em>tic,toc</em> code again, you will see that it got <strong>a lot</strong> faster. But it is still much much too slow if we want to run it on real data sets (and not just 50 data points.)
+</p>
+-->
+
+
+<p>The key to efficient programming in Octave and machine learning in general is to think about it in terms of mathematics, and not in terms of Loops. </p>
+
+<p>	(a) Show that the Gram matrix (aka inner-product matrix)
+$$	G_{ij}=\vec x_i^\top\vec z_j $$
+can be expressed in terms of a pure matrix multiplication. Once you are done with the derivation, implement the function <strong><code>innerproduct.m</code></strong>.</p>
+
+<p>
+<font color="0000FF">
+	My Answer to (a):
+</font>	
+</p>
+
+
+
+
+
+<td><p>	(b) Let us define two new matrices $S,R\in{\cal R}^{n\times m}$ 
+		$$S_{ij}=\vec x_i^\top\vec x_i, \ \ R_{ij}=\vec z_j^\top\vec z_j.$$
+ 	Show that the <em>squared</em>-euclidean matrix $D^2\in{\cal R}^{n\times m}$, defined as
+		$$D^2_{ij}=(\vec x_i-\vec z_j)^2,$$
+	can be expressed as a linear combination of the matrix $S, G, R$. (Hint: It might help to first express $D^2_{ij}$ in terms of inner-products.) What do you need to do to obtain the true Euclidean distance matrix $D$?</p></td>
+	
+<p>
+<font color="0000FF">
+	My Answer to (b):
+</font>	
+</p>
+
+
+	
+	
+<td><p>	(c) Implement the function <strong><code>l2distance.m</code></strong>, which computes the Euclidean distance matrix $D$ without a single loop. Test the distance function again:
+<pre>
+X=rand(100,100);
+Z=rand(100,50);
+tic;D=l2distance(X,Z);toc 
+</pre>	
+	How much faster is your code now? With this implementation you should easily be able to compute the distances between <strong>many more</strong> vectors. Call the following function  <pre>hw0tictoc</pre>
+	to see how many distance computations you can perform within one second. With the loopy implementations, the same computation might have taken you several days. 
+</p></td>
+
+<p>
+<font color="0000FF">
+	My Answer to (c):
+</font>	
+</p>
+
+
+
+
+
+<h4>Hints</h4>
+<table border="0" cellpadding="10">
+  <tr><td colspan="2"><b>Octave functions you might want to use:</b></td></tr>
+  
+<tr><td><code>size</code></td><td>Returns the dimensions of a matrix or vector.</td></tr>
+<tr><td><code>repmat</code></td><td>Replicates a vector to create a matrix with identical rows or columns.</td></tr>
+<tr><td><code>sqrt</code></td><td>Computes the element-wise square-root of a matrix (or scalar).</td></tr>
+<tr><td><code>keyboard</code></td><td>This is very handy if you want to debug your code. Wherever you place keyboard, you get the interactive interpreter to debug your program.</td></tr>
+<tr><td><code>dbstep</code></td><td>If you interrupted your code with <code>keyboard</code> you can take a step with <code>dbstep</code>.</td></tr>
+<tr><td><code>dbcont</code></td><td>If you interrupted your code with <code>keyboard</code> you can continue it with <code>dbcont</code>.</td></tr>
+</table>
+<p><strong>Tests.</strong> To test your code you can run <code>hw0tests</code>, which runs several unit tests. As your project progresses, slowly but surely these tests should stop failing. </p>
+<p><strong>Timing:</strong> To evaluate how fast your final code is, run <code>hw0tictoc</code>. 
+
+<h4>Credits</h4>
+	Parts of this webpage were copied from or heavily inspired by John DeNero's and Dan Klein's (awesome) <a href="http://ai.berkeley.edu/project_overview.html">Pacman class</a>.
+	
+</body>
+</html>
