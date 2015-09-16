@@ -1,6 +1,7 @@
 function G=innerproduct(X,Z)
 % function G=innerproduct(X,Z)
-%	
+%
+%
 % Computes the inner-product matrix. 
 % Syntax:
 % D=innerproduct(X,Z)
