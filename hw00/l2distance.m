@@ -1,7 +1,6 @@
 function D=l2distance(X,Z)
 % function D=l2distance(X,Z)
 %	
-%
 % Computes the Euclidean distance matrix. 
 % Syntax:
 % D=l2distance(X,Z)
