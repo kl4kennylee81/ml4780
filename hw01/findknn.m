@@ -5,7 +5,7 @@ function [indices,dists]=findknn(xTr,xTe,k);
 %
 % Input:
 % xTr = dxn input matrix with n column-vectors of dimensionality d
-% xTe = dxm input matrix with n column-vectors of dimensionality d
+% xTe = dxm input matrix with m column-vectors of dimensionality d
 % k = number of nearest neighbors to be found
 % 
 % Output:
@@ -14,14 +14,16 @@ function [indices,dists]=findknn(xTr,xTe,k);
 %
 
 % output random results, please erase this code
-[d,ntr]=size(xTr);
-[d,nte]=size(xTe);
-indices=ceil(rand(k,nte)*ntr);
-dists=rand(k,nte);
-if k>ntr,k=ntr;end;
+%[d,ntr]=size(xTr);
+%[d,nte]=size(xTe);
+%indices=ceil(rand(k,nte)*ntr);
+%dists=rand(k,nte);
+%if k>ntr,k=ntr;end;
 
 %% fill in code here
-	
-	
+l2d = l2distance(xTr,xTe);
+[dists,indices]= sort(l2d,1);
+indices = indices(1:k,:);
+dists = dists(1:k,:);
 %%	%
 	

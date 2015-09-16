@@ -18,12 +18,41 @@ function D=l2distance(X,Z)
 
 if (nargin==1) % case when there is only one input (X)
 	%% fill in code here
+  n = columns(X);
+  m = columns(X);
+  
+  % making G
+  G = innerproduct(X,X);
+
+  % making S
+  diag_vector_i = sum(X.*X,1).';
+  %S = repmat(diag_vector_i,1,m);
+  S = diag_vector_i(:,ones(1,m));
+
+  % making R
+  diag_vector_j = diag_vector_i.';
+  %R = repmat(diag_vector_j,n,1);
+  R = diag_vector_j(ones(n,1),:);
 
 else  % case when there are two inputs (X,Z)
 	%% fill in code here
+  n = columns(X);
+  m = columns(Z);
+
+  % making G
+  G = innerproduct(X,Z);
+
+  % making S
+  diag_vector_i = sum(X.*X,1).';
+  %S = repmat(diag_vector_i,1,m);
+  S = diag_vector_i(:,ones(1,m));
+
+  % making R
+  diag_vector_j = sum(Z.*Z,1);
+  % R = repmat(diag_vector_j,n,1);
+  R = diag_vector_j(ones(n,1),:);
 
 end;
-%
 
-
-
+D_squared = S - 2.*G + R;
+D = sqrt(abs(D_squared));

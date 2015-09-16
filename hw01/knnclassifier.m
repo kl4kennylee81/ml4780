@@ -13,15 +13,9 @@ function preds=knnclassifier(xTr,yTr,xTe,k);
 % preds = predicted labels, ie preds(i) is the predicted label of xTe(:,i)
 %
 
-
-% output random result as default (you can erase this code)
-[d,n]=size(xTe);
-[d,ntr]=size(xTr);
-if k>ntr,k=ntr;end;
-
-%currently assigning random predictions
-un=unique(yTr);
-preds=un(ceil(rand(1,n)*length(un)));
+[indices,distances]=findknn(xTr,xTe,k);
+index_labels = yTr(indices);
+preds = mode(index_labels);
 
 %% fill in code here
 
