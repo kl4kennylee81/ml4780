@@ -15,7 +15,19 @@ function preds=knnclassifier(xTr,yTr,xTe,k);
 
 [indices,distances]=findknn(xTr,xTe,k);
 index_labels = yTr(indices);
-preds = mode(index_labels);
+if (size(xTe,2) == 1)
+	index_labels = index_labels';
+end
+preds = mode(index_labels,1);
+[val,freq,cells] = mode(index_labels,1);
+num_modes = sum(cellfun(@length,cells),2);
+smaller_k = k;
+
+
+
+
+
+
 
 %% fill in code here
 
