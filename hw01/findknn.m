@@ -3,6 +3,7 @@ function [indices,dists]=findknn(xTr,xTe,k);
 %
 % Finds the k nearest neighbors of xTe in xTr.
 %
+%
 % Input:
 % xTr = dxn input matrix with n column-vectors of dimensionality d
 % xTe = dxm input matrix with m column-vectors of dimensionality d

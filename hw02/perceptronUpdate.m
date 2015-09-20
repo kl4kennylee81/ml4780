@@ -12,5 +12,9 @@ function w = perceptronUpdate(x,y,w)
 %
 
 d = size(x,1);
-%% fill in code here
+guess = w.'*x;
+if (y*guess <= 0)
+	w = w + y*x;
+end
+
 

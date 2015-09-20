@@ -15,7 +15,9 @@ function preds = classifyLinear(x,w,b);
 if nargin<3,
 	b=0;
 end;
-
-%% fill in code here
+[d,n] = size(x);
+w_bias = [w;b];
+x_with_ones = [x;ones(1,n)];
+preds = sign(w_bias.'*x_with_ones);
 
 
