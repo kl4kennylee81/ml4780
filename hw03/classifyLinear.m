@@ -11,6 +11,6 @@ function preds = classifyLinear(x,w,b);
 % preds: predictions
 %
 
-%% fill in code here
+preds = sign(w.'*x+b);
 
 

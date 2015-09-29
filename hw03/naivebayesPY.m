@@ -16,5 +16,9 @@ x=[x ones(size(x,1),2)];
 y=[y -1 1];
 
 [d,n] = size(x);
-%% fill in code here
+
+count_pos = sum(y == 1);
+count_neg = sum(y == -1);
+pos = count_pos/n;
+neg = count_neg/n;
 
