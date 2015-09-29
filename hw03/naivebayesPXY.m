@@ -23,12 +23,12 @@ matrix_with_labels = x .* repmat(y,d,1);
 pos_cols = x(:,y==1);
 pos_denominator = sum(pos_cols(:));
 
-pos_feature_vector = sum(matrix_with_labels==1,2);
+pos_feature_vector = sum(matrix_with_labels>0,2);
 posprob = pos_feature_vector./pos_denominator;
 
 neg_cols = x(:,y==-1);
 neg_denominator = sum(neg_cols(:));
 
-neg_feature_vector = sum(matrix_with_labels==-1,2);
+neg_feature_vector = sum(matrix_with_labels<0,2);
 negprob = neg_feature_vector./neg_denominator;
 
