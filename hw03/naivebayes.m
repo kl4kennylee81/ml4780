@@ -23,8 +23,6 @@ x1_pos_log = x1(x1>0) .* pos_log
 x1_pos_PXY = sum(x1_pos_log,1);
 poscond =  x1_pos_PXY + log(py_pos);
 
-
-
 neg_vector = negprob(x1>0);
 neg_log = log(neg_vector);
 x1_neg_log = x1(x1>0) .* neg_log
