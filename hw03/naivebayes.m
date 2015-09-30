@@ -19,13 +19,13 @@ function [poscond, negcond] = naivebayes(x,y,x1)
 
 pos_vector = posprob(x1>0);
 pos_log = log(pos_vector);
-x1_pos_log = x1(x1>0) .* pos_log
+x1_pos_log = x1(x1>0) .* pos_log;
 x1_pos_PXY = sum(x1_pos_log,1);
 poscond =  x1_pos_PXY + log(py_pos);
 
 neg_vector = negprob(x1>0);
 neg_log = log(neg_vector);
-x1_neg_log = x1(x1>0) .* neg_log
+x1_neg_log = x1(x1>0) .* neg_log;
 x1_neg_PXY = sum(x1_neg_log,1);
 negcond = x1_neg_PXY + log(py_neg);
 

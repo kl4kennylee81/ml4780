@@ -11,6 +11,10 @@ def hashfeatures(name):
     v[hash(featurestring) % B]=1
     featurestring='suffix'+name[-1:-min(m+2,len(name)+1):-1]
     v[hash(featurestring) % B]=1
+  vowels = 'aie'
+  if vowels.find(name[-1])!=-1:
+    featurestring = 'lastvFemale'
+    v[hash(featurestring) % B]=1
   return v
 
 for name in sys.stdin:
