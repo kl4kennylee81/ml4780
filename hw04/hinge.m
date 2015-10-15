@@ -14,30 +14,12 @@ function [loss,gradient]=hinge(w,xTr,yTr,lambda)
 %
 
 [d,n]=size(xTr);
-loss = 0;
-gradient = rand(d,1);
+individual_loss = max(1-yTr.*(w.'*xTr),0);
+loss = sum(individual_loss) + lambda*w.'*w;
 
+nonzero_y = (individual_loss>0).*yTr;
+gradient = -xTr*nonzero_y.' + 2*lambda*w;
 
-% loss_sum = 0;
-
-% for i = 1:n	
-% 	loss_sum = loss_sum + max( 1 - (yTr(i)*(w.'*xTr(:,i)) ),0 );
-% end
-
-% loss = loss_sum + lambda*w.'*w;
-
-
-% gradient_loss_sum = 0;
-
-% for i = 1:n
-% 	val = yTr(i) * (w.'*xTr(:,i));
-
-% 	if val < 1
-% 		gradient_loss_sum = gradient_loss_sum + (-yTr(i)) * xTr(:,i)
-% 	end
-% end
-
-% gradient = gradient_loss_sum + 2*lambda*w
 
 
 
