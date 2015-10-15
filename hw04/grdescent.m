@@ -23,11 +23,11 @@ while (iterations < maxiter)
 
 	[loss, gradient] = func(weightVector);
 
-	if norm(gradient) < tolerance
+	if norm(gradient) < tolerance;
 		break
 	end;
 
-	if loss > prevloss
+	if loss > prevloss;
 		stepsizeFactor = 0.5;
 	else
 		stepsizeFactor = 1.01;
