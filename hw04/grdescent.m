@@ -12,34 +12,31 @@ function [w]=grdescent(func,w0,stepsize,maxiter,tolerance)
 % w = final weight vector
 %
 
-if nargin<5,tolerance=1e-02;
+if nargin<5,tolerance=1e-02; end;
 
-else
-	iterations = 0;
-	prevloss = 0;
-	weightVector = w0;
-	stepsizeFactor = 1.01;
+iterations = 0;
+prevloss = 0;
+weightVector = w0;
+stepsizeFactor = 1.01;
 
-	while (iterations < maxiter)
+while (iterations < maxiter)
 
-		[loss, gradient] = func(weightVector);
+	[loss, gradient] = func(weightVector);
 
-		if norm(gradient) < tolerance
-			break
-		end;
-
-		if loss > prevloss
-			stepsizeFactor = 0.5;
-		else
-			stepsizeFactor = 1.01;
-			weightVector = weightVector + (-stepsize*stepsizeFactor)*gradient;
-		end;
-
-		prevloss = loss;
-		iterations++;
-
+	if norm(gradient) < tolerance
+		break
 	end;
 
-	w = weightVector;
+	if loss > prevloss
+		stepsizeFactor = 0.5;
+	else
+		stepsizeFactor = 1.01;
+		weightVector = weightVector + (-stepsize*stepsizeFactor)*gradient;
+	end;
+
+	prevloss = loss;
+	iterations++;
 
 end;
+
+w = weightVector;
