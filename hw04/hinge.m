@@ -14,6 +14,8 @@ function [loss,gradient]=hinge(w,xTr,yTr,lambda)
 %
 
 [d,n]=size(xTr);
+loss = 0;
+gradient = rand(d,1);
 
 
 loss_sum = 0;

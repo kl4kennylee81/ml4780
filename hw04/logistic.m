@@ -13,3 +13,7 @@ function [loss,gradient]=logistic(w,xTr,yTr)
 %
 
 [d,n]=size(xTr);
+loss = log(1+exp(-yTr*xTr.'*w));
+gradient_numerator = -xTr*yTr.'*exp(-yTr*xTr.'*w);
+gradient_denominator = (1+exp(-yTr*xTr.'*w));
+gradient = gradient_numerator/gradient_denominator;
