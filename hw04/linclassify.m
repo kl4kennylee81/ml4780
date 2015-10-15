@@ -14,4 +14,3 @@ function [preds]=linclassify(w,xTe)
 
 preds = sign(w.'*xTe);
 
-
