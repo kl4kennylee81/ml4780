@@ -16,6 +16,7 @@ if nargin<5,tolerance=1e-02; end;
 
 iterations = 0;
 prevloss = 0;
+prev_w = w0;
 weightVector = w0;
 stepsizeFactor = 1.01;
 
@@ -29,8 +30,11 @@ while (iterations < maxiter)
 
 	if loss > prevloss
 		stepsizeFactor = 0.5;
+		weightVector = prev_w
+		weightVector = weightVector + (-stepsize*stepsizeFactor)*gradient;
 	else
 		stepsizeFactor = 1.01;
+		prev_w = weightVector
 		weightVector = weightVector + (-stepsize*stepsizeFactor)*gradient;
 	end;
 
