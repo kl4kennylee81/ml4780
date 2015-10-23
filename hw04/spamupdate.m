@@ -1,4 +1,5 @@
 function w=spamupdate(w,email,truth);
+
 %	function w=spamupdate(w,email,truth);
 %
 % Input:

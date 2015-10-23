@@ -14,7 +14,7 @@ function [fpr,tpr,auc]=spamfilter(xTe,yTe,thresh);
 	
 [d,n]=size(xTe);
 
-if exist('thresh')~=1,thresh=0.3;end;
+if exist('thresh')~=1,thresh=0.1;end;
 
 % load weight vector w
 load('w0','w');

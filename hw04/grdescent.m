@@ -30,10 +30,12 @@ while (iterations < maxiter)
 
 	if loss > prevloss;
 		stepsizeFactor = 0.5*stepsizeFactor;
+		% stepsizeFactor = 0.5;
 		weightVector = prev_w;
 		weightVector = weightVector + (-stepsize*stepsizeFactor)*gradient;
 	else
 		stepsizeFactor = 1.01*stepsizeFactor;
+		% stepsizeFactor = 1.01;
 		prev_w = weightVector;
 		weightVector = weightVector + (-stepsize*stepsizeFactor)*gradient;
 	end;

@@ -14,7 +14,7 @@ function [loss,gradient]=hinge(w,xTr,yTr,lambda)
 %
 
 [d,n]=size(xTr);
-individual_loss = max(1-yTr.*(w.'*xTr),0);
+individual_loss = max(1 - yTr.*(w.'*xTr), 0);
 loss = sum(individual_loss) + lambda*w.'*w;
 
 nonzero_y = (individual_loss>0).*yTr;

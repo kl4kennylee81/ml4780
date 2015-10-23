@@ -1,6 +1,7 @@
 function [loss,gradient]=ridge(w,xTr,yTr,lambda)
 % function w=ridge(xTr,yTr,lambda)
 %
+
 % INPUT:
 % w weight vector (default w=0)
 % xTr dxn matrix (each column is an input vector)

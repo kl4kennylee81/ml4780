@@ -8,7 +8,7 @@ if nargin<2,output='data_train';end;
 % Uncomment these lines if you want to do tokenization yourself
 
 fprintf('Running python tokenization script ...\n');
-system(['python tokenize.py ' directory ' 10 > spamdata.csv']);
+system(['python tokenize.py ' directory '  > spamdata.csv']);
 fprintf('Loading data ...\n');
 M=load('spamdata.csv');
 
