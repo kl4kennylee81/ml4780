@@ -8,7 +8,7 @@ if nargin<2,output='data_train';end;
 % Uncomment these lines if you want to do tokenization yourself
 
 fprintf('Running python tokenization script ...\n');
-system(['python tokenize.py ' directory '  > spamdata.csv']);
+system(['python tokenize.py ' directory ' 10 > spamdata.csv']);
 fprintf('Loading data ...\n');
 M=load('spamdata.csv');
 
@@ -23,7 +23,3 @@ Y=cellfun(@(x) isequal(x,'spam')*2-1,label,'UniformOutput',true)';
 clear('label');
 
 save([output '.mat'],'X','Y');
-
-
-
-
