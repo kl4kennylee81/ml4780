@@ -87,7 +87,6 @@ end;
 
 
 
-
 %% test with another distribution #2
 OFFSET = 3;
 Nsmall = 7;
@@ -96,6 +95,8 @@ Nsmall = 7;
 xTe =  [0.45864, 2.44662, 1.00345, -0.10560, 3.07264, 3.13035, 2.25265;
         0.71552, 1.68167, 0.15182, -0.48155, 3.81535, 2.72151, 3.78697];
 yTe =  [1, 2, 1, 1, 2, 2, 2];
+
+
 
 %% Estimate AVERAGE ERROR (TOTAL)
 total=0;
@@ -116,6 +117,7 @@ else
 	ok=ok+1;
 end;
 
+
 %% testing computehbar.m
 hbar=computehbar(xTe,SIGMA,LAMBDA);
 bias=mean((hbar-ybar).^2);
@@ -126,6 +128,7 @@ else
 	ok=ok+1;
 end;
 
+
 %% testing computevariance.m
 variance=computevariance(xTe,SIGMA,LAMBDA,hbar);
 if abs(variance - 0.034) > 0.005;
@@ -134,6 +137,7 @@ if abs(variance - 0.034) > 0.005;
 else
 	ok=ok+1;
 end;
+
 
 
 difference = total - noise - bias - variance;
