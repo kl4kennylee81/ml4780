@@ -26,22 +26,37 @@ disp('Generating Kernel ...')
 % 
 % YOUR CODE
 %
+K = computeK(ktype, xTr, xTr, kpar);
+
 disp('Solving QP ...')
 %
 % YOUR CODE 
 %
+[H,q,A,b,lb,ub] = generateQP(K,yTr,C);
+
 disp('Recovering bias')
 %
 % YOUR CODE 
 %
+
+
 disp('Extracting support vectors ...')
 %
 % YOUR CODE 
 %
+X0 = ones(n, 1);
+[X, OBJ, INFO, LAMBDA] = qp(X0, H, q, A, b, lb, ub);
+alphas = X;
+sv_i = find(X);
+
+
 disp('Creating classifier ...')
 %
 % YOUR CODE 
 %
+
+
+
 disp('Computing training error:') % this is optional, but interesting to see
 %
 % YOUR CODE 

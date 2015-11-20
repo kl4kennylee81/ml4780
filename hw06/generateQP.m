@@ -17,7 +17,11 @@ function [H,q,A,b,lb,ub]=generateQP(K,yTr,C);
 assert(d==n);
 
 % YOUR CODE
-
-
-
-
+lb = 0;
+ub = C;
+horizontal_y = repmat(yTr, n, 1);
+vertical_y = repmat(yTr.',1,n);
+H = horizontal_y .* K .* vertical_y;
+q = ones(n,1);
+b = 0;
+A = yTr;
