@@ -41,12 +41,12 @@ disp('Extracting support vectors ...')
 % YOUR CODE 
 %
 
+WeakEps=sqrt(eps)*100;
 
 X0 = zeros(n, 1);
 [X, OBJ, INFO, LAMBDA] = qp(X0, H, q, A, b, lb, ub);
 alphas = X;
-sv_i = find(X);
-alphas
+sv_i = find(abs(X) > WeakEps);
 
 disp('Recovering bias')
 %
