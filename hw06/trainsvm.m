@@ -34,11 +34,6 @@ disp('Solving QP ...')
 %
 [H,q,A,b,lb,ub] = generateQP(K,yTr,C);
 
-disp('Recovering bias')
-%
-% YOUR CODE 
-%
-
 
 disp('Extracting support vectors ...')
 %
@@ -49,10 +44,16 @@ X0 = ones(n, 1);
 alphas = X;
 sv_i = find(X);
 
+disp('Recovering bias')
+%
+bias = recoverBias(K,yTr,alphas,C);
+%
+
 
 disp('Creating classifier ...')
 %
-% YOUR CODE 
+ai_yi = alphas*.yTr;
+svmclassify = @(xTe) sum((computeK(ktype,xTr,xTe,kpar)*.ai_yi.'),1) + bias;
 %
 
 
