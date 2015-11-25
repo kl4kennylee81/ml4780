@@ -46,6 +46,7 @@ X0 = zeros(n, 1);
 [X, OBJ, INFO, LAMBDA] = qp(X0, H, q, A, b, lb, ub);
 alphas = X;
 sv_i = find(X);
+alphas
 
 disp('Recovering bias')
 %
@@ -56,7 +57,7 @@ bias = recoverBias(K,yTr,alphas,C);
 disp('Creating classifier ...')
 %
 ai_yi = alphas.*yTr;
-svmclassify = @(xTe) sum( (computeK(ktype,xTr,xTe,kpar) .* repmat(ai_yi,1,size(xTe,2))), 1) + bias;
+svmclassify = @(xTe) (sum((computeK(ktype,xTr,xTe,kpar) .* repmat(ai_yi,1,size(xTe,2))), 1)).' + bias;
 
 %
 
