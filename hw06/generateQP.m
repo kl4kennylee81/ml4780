@@ -20,8 +20,6 @@ assert(d==n);
 lb = zeros(n,1);
 ub = repmat(C, n, 1);
 
-
-yTr = yTr.';
 horizontal_y = repmat(yTr, n, 1);
 vertical_y = repmat(yTr.',1,n);
 H = (horizontal_y .* K) .* vertical_y;

@@ -32,13 +32,16 @@ disp('Solving QP ...')
 %
 % YOUR CODE 
 %
-[H,q,A,b,lb,ub] = generateQP(K,yTr,C);
+yTr2 = yTr.';
+[H,q,A,b,lb,ub] = generateQP(K,yTr2,C);
 
 
 disp('Extracting support vectors ...')
 %
 % YOUR CODE 
 %
+
+
 X0 = ones(n, 1);
 [X, OBJ, INFO, LAMBDA] = qp(X0, H, q, A, b, lb, ub);
 alphas = X;
@@ -53,7 +56,8 @@ bias = recoverBias(K,yTr,alphas,C);
 disp('Creating classifier ...')
 %
 ai_yi = alphas.*yTr;
-svmclassify = @(xTe) sum((computeK(ktype,xTr,xTe,kpar) .* ai_yi.'),1) + bias;
+svmclassify = @(xTe) sum( (computeK(ktype,xTr,xTe,kpar).' .* repmat(ai_yi.', size(xTe,2), 1)) , 1) + bias;
+
 %
 
 

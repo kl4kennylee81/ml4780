@@ -14,6 +14,8 @@ function bias=recoverBias(K,yTr,alphas,C);
 % 0<alpha<C
 %
 
+yTr = yTr(:);
+
 a_y = yTr.' .* alphas; % a_Y is nx1
 I = find(alphas>0 & alphas<C);
 random_index = I(1);

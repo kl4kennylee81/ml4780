@@ -27,7 +27,7 @@ try
 	failtest=norm(diag(computeK('rbf',X,X,1))-ones(3,1))>WeakEps;
     addon='';
 catch
-	failtest=true;
+failtest=true;
 	addon=lasterr();
 end;
 if failtest,
@@ -121,7 +121,7 @@ else
 end;
 % generateQP test
 K = rand(20,20);
-yTr = ones(20,1);
+yTr = ones(1,20);
 [H,q,A,b,lb,ub]=generateQP(K,yTr,1);
 try
 	failtest=~all(size(ub)==size(lb));
@@ -183,11 +183,13 @@ end;
 X = rand(20,100);
 w = rand(20,1);
 b = - mean(X'*w);
-y = sign(X'*w+b);
+y = sign(X'*w+b)';
 [svmclassify,sv_i,alpha]=trainsvm(X,y,10,'linear',1);
 
 try
 	failtest=(sum(sign(svmclassify(X))~=y(:))./length(y)>0.1);
+	% s = sum(sign(svmclassify(X))~=y(:))./length(y);
+	% s
     addon='';
 catch
 	failtest=true;
@@ -195,18 +197,20 @@ catch
 end;
 if failtest,
     failed=failed+1;
-	s{length(s)+1}=['SVM classification is incorrect' addon]
+	s{length(s)+1}=['Linear SVM classification is incorrect' addon]
 else
 	ok=ok+1;
 end;
 
 try
-	failtest=(alpha>=0);
+	failtest=(~all(alpha>=-WeakEps));
     addon='';
 catch
 	failtest=true;
 	addon=lasterr();
 end;
+
+
 if failtest,
     failed=failed+1;
 	s{length(s)+1}=['alpha not greater than 0' addon]
@@ -245,7 +249,7 @@ K =[
    1.31246   1.55994   2.12079   1.06140   1.18423;
    0.77229   1.64305   1.06140   1.77547   0.87014;
    0.64781   1.03909   1.18423   0.87014   0.82340];
-y =[-1;1; 1; 1; -1];
+y =[-1;1; 1; 1; -1]';
 alpha =[4.98878; 0.00000 ; 7.35341; 4.23333; 6.59796];
 bias = recoverBias(K,y,alpha,10);
 try
