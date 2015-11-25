@@ -23,10 +23,10 @@ if (strncmp(kernel_type, "linear", length(kernel_type)) == 1)
 	K = X.'*Z;
 
 elseif (strncmp(kernel_type, "rbf", length(kernel_type)) == 1)
-	K = exp(-param * (l2distance(X,Z)^2));
+	K = exp(-param * (l2distance(X,Z).^2));
 
 elseif (strncmp(kernel_type, "polynomial", length(kernel_type)) == 1)
-	K = (X.'*Z + 1)^param;
+	K = (X.'*Z + 1).^param;
 else
 	disp("nice");
 

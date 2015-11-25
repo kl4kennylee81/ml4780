@@ -52,8 +52,8 @@ bias = recoverBias(K,yTr,alphas,C);
 
 disp('Creating classifier ...')
 %
-ai_yi = alphas*.yTr;
-svmclassify = @(xTe) sum((computeK(ktype,xTr,xTe,kpar)*.ai_yi.'),1) + bias;
+ai_yi = alphas.*yTr;
+svmclassify = @(xTe) sum((computeK(ktype,xTr,xTe,kpar) .* ai_yi.'),1) + bias;
 %
 
 
