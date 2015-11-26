@@ -18,15 +18,61 @@ function [bestC,bestP,bestval,allvalerrs]=crossvalidate(xTr,yTr,ktype,Cs,paras)
 % validation split. 
 %
 
+[d,n] = size(xTr);
+C_len = length(Cs);
+P_len = length(paras);
 
-%% Split off validation data set
-% YOUR CODE
+k = 2;
+ktotal = ceil(n/k);
+kwindow = floor(n/k);
+errorMatrix(1:C_len, 1:P_len) = 0; % error matrix initialized to 0
 
+% accumilate
+runningC = 0;
+runningP = 0;
+runningErr = 0;
+loopend = n-kwindow;
 
-%% Evaluate all parameter settings
-% YOUR CODE
+for fold=1:loopend
+	x_validation = xTr(:,[fold, fold+kwindow]);
+	x_training = xTr;
+	x_training(:,[fold,fold+kwindow]) = [];
 
-%% Identify best setting
-% YOUR CODE
+	y_validation = yTr(:,[fold, fold+kwindow]);
+	y_training = yTr;
+	y_training(:,[fold,fold+kwindow]) = [];
 
+	% reinitialize loop variables
+	minError = 101;
+	minC = -1;
+	minP = -1;
+	tempErrorMatrix(1:C_len, 1:P_len) = 0;
 
+	for i = 1:C_len
+		for j=1:P_len
+			c = Cs(i);
+			kpar = paras(j);
+			[svmclassify, sv_i, alphas] = trainsvm(x_training, y_training, c, ktype, kpar);
+			guess = svmclassify(x_validation); % m x 1
+
+			err = sum(sign(guess) ~= y_validation.') ./ length(guess);
+			tempErrorMatrix(i,j) = err;
+
+			if err < minError
+				minError = err;
+				minC = c;
+				minP = kpar;
+			end;
+		end;
+	end;
+
+	runningErr = runningErr + minError;
+	runningC = runningC + minC;
+	runningP = runningP + minP;
+	errorMatrix = errorMatrix + tempErrorMatrix;
+end;
+
+bestC = runningC ./ ktotal;
+bestP = runningP ./ ktotal;
+bestval = runningErr ./ ktotal;
+allvalerrs = errorMatrix ./ ktotal;

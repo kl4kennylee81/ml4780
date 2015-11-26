@@ -26,7 +26,7 @@ if (nargin==1) % case when there is only one input (X)
   m = columns(X);
   
   % making G
-  G = innerproduct(X,X);
+  G = X.'*X;
 
   % making S
   diag_vector_i = sum(X.*X,1).';
@@ -44,7 +44,7 @@ else  % case when there are two inputs (X,Z)
   m = columns(Z);
 
   % making G
-  G = innerproduct(X,Z);
+  G = X.'*Z;
 
   % making S
   diag_vector_i = sum(X.*X,1).';
