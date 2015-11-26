@@ -22,25 +22,28 @@ function [bestC,bestP,bestval,allvalerrs]=crossvalidate(xTr,yTr,ktype,Cs,paras)
 C_len = length(Cs);
 P_len = length(paras);
 
-k = 2;
+k = 1;
 ktotal = ceil(n/k);
 kwindow = floor(n/k);
-errorMatrix(1:C_len, 1:P_len) = 0; % error matrix initialized to 0
 
 % accumilate
 runningC = 0;
 runningP = 0;
 runningErr = 0;
-loopend = n-kwindow;
+errorMatrix(1:C_len, 1:P_len) = 0; % error matrix initialized to 0
 
-for fold=1:loopend
-	x_validation = xTr(:,[fold, fold+kwindow]);
+fold = 1;
+
+while fold <= n-kwindow+1
+	disp("hi")
+
+	x_validation = xTr(:,[fold, fold+kwindow-1]);
 	x_training = xTr;
-	x_training(:,[fold,fold+kwindow]) = [];
+	x_training(:,[fold,fold+kwindow-1]) = [];
 
-	y_validation = yTr(:,[fold, fold+kwindow]);
+	y_validation = yTr(:,[fold, fold+kwindow-1]);
 	y_training = yTr;
-	y_training(:,[fold,fold+kwindow]) = [];
+	y_training(:,[fold,fold+kwindow-1]) = [];
 
 	% reinitialize loop variables
 	minError = 101;
@@ -70,6 +73,8 @@ for fold=1:loopend
 	runningC = runningC + minC;
 	runningP = runningP + minP;
 	errorMatrix = errorMatrix + tempErrorMatrix;
+
+	fold = fold+kwindow;
 end;
 
 bestC = runningC ./ ktotal;
