@@ -35,7 +35,6 @@ errorMatrix(1:C_len, 1:P_len) = 0; % error matrix initialized to 0
 fold = 1;
 
 while fold <= n-kwindow+1
-	disp("hi")
 
 	x_validation = xTr(:,[fold:fold+kwindow-1]);
 	x_training = xTr;

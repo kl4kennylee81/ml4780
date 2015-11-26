@@ -14,10 +14,16 @@ function bias=recoverBias(K,yTr,alphas,C);
 % 0<alpha<C
 %
 
+WeakEps=sqrt(eps)*100;
+
 yTr = yTr.';
 
 a_y = yTr.' .* alphas; % a_Y is nx1
-I = find(alphas>0 & alphas<C);
+I = find(alphas>WeakEps & alphas<C);
+random_index = I(1);
+% y_i = yTr(random_index);
+% K_J = K(:,random_index); % K_J is nx1;
+
 possible_alphas = sort(alphas(I));
 [n,m] = size(possible_alphas);
 median_val = possible_alphas(ceil(n/2));
