@@ -1,0 +1,15 @@
+
+--This line, and those below, will be ignored--
+
+A    hw05
+A    hw05/computeybar.m
+A    hw05/distance.m
+A    hw05/scat.m
+A    hw05/kregression.m
+A    hw05/biasvariancedemo.m
+A    hw05/biasvariancedemoSigma.m
+AM   hw05/octave-workspace
+A    hw05/computevariance.m
+A    hw05/toydata.m
+A    hw05/hw05tests.m
+A    hw05/computehbar.m

@@ -22,7 +22,7 @@ function [bestC,bestP,bestval,allvalerrs]=crossvalidate(xTr,yTr,ktype,Cs,paras)
 C_len = length(Cs);
 P_len = length(paras);
 
-k = 5;
+k = 6;
 ktotal = ceil(n/k);
 kwindow = floor(n/k);
 
