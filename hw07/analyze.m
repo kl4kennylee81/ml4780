@@ -8,7 +8,6 @@ function output=analyze(kind,truth,preds)
 % (other values of 'kind' will follow later)
 %
 
-
 switch kind
 	case 'abs'
 		% compute the absolute difference between truth and predictions

@@ -16,107 +16,102 @@ function T=id3tree(xTr,yTr,maxdepth,weights)
 % T = decision tree
 %
 
-% OUTPUT entropysplit.m:
-% feature | best feature to split
-% cut     | Value to split on.
-% Hbest   | Loss of best split
+%% fill in code here
+% 1. prediction at this node
+% 2. index of feature to cut
+% 3. cutoff value c (<=c : left, and >c : right)
+% 4. index of left subtree (0 = leaf)
+% 5. index of right subtree (0 = leaf)
+% 6. parent (0 = root)
 
-
-[d, n] = size(xTr);
+% 2^maxdepth-1 qs
+disp("started");
+[d,n] = size(xTr);
 
 if nargin<3,
-	weights=ones(1,n)./n;
-	maxdepth = (2^d) + 1;
+  maxdepth=d+1;
+  total_nodes = 2^(maxdepth)-1;
+else
+  total_nodes = 2^maxdepth-1;
 end;
 
-[d, n] = size(xTr);
-q = (2^maxdepth) - 1;
-Tree = zeros(6, q);
-features_to_use = ones(q, d); % qxd matrix keeps track of which features haven't been used at node (row) i
-location_of_x = ones(1, n); % keeps track of where each x_i is in the tree
-lowerbound = 2^(maxdepth-1);
-upperbound = q;
-
-for currentNode=1:q
-	if (currentNode <= lowerbound && currentNode <= upperbound) 
-
-		available_x_indicies = find(location_of_x == currentNode); % 1 x n-? shows the columns of available vectors
-		abridged_y = yTr(available_x_indicies);
-
-		if isempty(abridged_y)
-			continue;
-		end;
-		
-		Tree(1, currentNode) = mode(abridged_y);
-		Tree(2, currentNode) = -1;
-		Tree(3, currentNode) = -1;
-		Tree(4, currentNode) = 0;
-		Tree(5, currentNode) = 0;
-
-		if currentNode == 1 
-			Tree(6, currentNode) = 0; % root node
-		else
-			Tree(6, currentNode) = floor(currentNode/2);
-		end;
-	else
-
-		% 1. find vectors that are available at this node
-		available_x_indicies = find(location_of_x == currentNode); % 1 x n-? shows the columns of available vectors
-		shortened_xTr = xTr(:, available_x_indicies); % d x n-? take only the correct training instances	
-		abridged_y = yTr(available_x_indicies);
-
-		% 2. find features (dimensions) that haven't been used at the current node
-		candidate_features = features_to_use(currentNode, :); % 1xd vector, 1 means usable, 0 means used
-		available_feat = find(candidate_features); % 1 x d-? shows the indicies of features you can use
-		abridged_x = shortened_xTr(available_feat, :); % d-? x n-? keep only the dimensions that haven't been used
-		
-		% 3 find the best split
-		[feature,cut,Hbest] = entropysplit(abridged_x, abridged_y, weights);
-
-		if feature == 0
-			continue;
-		end;
-
-		Tree(1, currentNode) = -1;
-		Tree(2, currentNode) = available_feat(feature);
-		Tree(3, currentNode) = cut;
-		Tree(4, currentNode) = -1;
-		Tree(5, currentNode) = -1;
-
-		% fill in parent
-		if currentNode == 1 
-			Tree(6, currentNode) = 0; % root node
-		else
-			Tree(6, currentNode) = floor(currentNode/2);
-		end;
-
-		left_indicies = find(abridged_y <= cut);
-		right_indicies = find(abridged_y > cut);		
-		left = abridged_x(left_indicies);
-		right = abridged_x(right_indicies);
-
-		if (left == 0 && right == 0)
-			Tree(4, currentNode) = 0;
-			Tree(5, currentNode) = 0;
-			Tree(1, currentNode) = mode(abridged_y);
-			continue;
-		end;
-
-		% update features_to_use
-		features_to_use(currentNode)(available_feat(feature)) = 0;
-
-		% update location_of_x
-		location_of_x((available_x_indicies(left_indicies))) = currentNode*2;
-		location_of_x((available_x_indicies(right_indicies))) = currentNode*2+1;
-	end;
+if nargin<4,
+  weights=ones(1,n)./n;
 end;
 
-T = Tree;
+T = zeros(6,total_nodes);
+% xTr_treeIndex = ones(1,n);
+% d_treeIndex = ones(d,total_nodes);
+function size_end = create_tree(id,xTr,yTr,depth,parent,d_index_list)
+% call on left
+% call on right
+if all(yTr == yTr(1)),
+  %1 prediction
+  T(1,id) = yTr(1);
+  if parent > id
+    size_end = parent;
+  else
+    size_end = id;
+  end
+% base case no more features
+elseif isempty(xTr),
+  T(1,id) = mode(yTr);
+  if parent > id
+    size_end = parent;
+  else
+    size_end = id;
+  end
+elseif depth == maxdepth,
+  T(1,id) = mode(yTr);
+  if parent > id
+    size_end = parent;
+  else
+    size_end = id;
+  end
+elseif id > total_nodes
+  size_end = parent;
+else
+  [feature,cut,Hbest]=entropysplit(xTr,yTr,weights);
+  if (feature == 0)
+    T(1,id) = mode(yTr);
+    if parent > id
+      size_end = parent;
+    else
+      size_end = id;
+    end
+  else
+    f_xTr = xTr(feature,:);
+    left_indexs = find(f_xTr<=cut);
+    right_indexs = find(f_xTr>cut);
 
+    %create the tree node
+    index_child1 = 2*id;
+    index_child2 = 2*id+1;
 
+    T(1,id) = mode(yTr);
+    T(2,id) = d_index_list(feature);
+    T(3,id) = cut;
+    T(4,id) = index_child1;
+    T(5,id) = index_child2;
+    T(6,index_child1) = id;
+    T(6,index_child2) = id;
 
+    % abridge for recursive call
+    removed_feature = d_index_list(1:end ~= feature);
 
+    xTr_i_removed = xTr(1:end ~= feature,:);
+    left_xTr = xTr_i_removed(:,left_indexs);
+    right_xTr = xTr_i_removed(:,right_indexs);
 
-
-
-
+    left_yTr = yTr(left_indexs);
+    right_yTr = yTr(right_indexs);
+    sizeleft = create_tree(index_child1,left_xTr,left_yTr,depth+1,id,removed_feature);
+    sizeright = create_tree(index_child2,right_xTr,right_yTr,depth+1,id,removed_feature);
+    size_end = max(sizeleft,sizeright);
+  end;
+end;
+end;
+total_d_index = [1:d];
+total_size = create_tree(1,xTr,yTr,1,0,total_d_index);
+T = T(:, 1:total_size);
+end;
