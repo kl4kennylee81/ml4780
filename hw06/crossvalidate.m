@@ -1,7 +1,7 @@
 function [bestC,bestP,bestval,allvalerrs]=crossvalidate(xTr,yTr,ktype,Cs,paras)
 % function [bestC,bestP,bestval,allvalerrs]=crossvalidate(xTr,yTr,ktype,Cs,paras)
 %
-% INPUT:	
+% INPUT:    
 % xTr : dxn input vectors
 % yTr : 1xn input labels
 % ktype : (linear, rbf, polynomial)
@@ -22,61 +22,66 @@ function [bestC,bestP,bestval,allvalerrs]=crossvalidate(xTr,yTr,ktype,Cs,paras)
 C_len = length(Cs);
 P_len = length(paras);
 
-k = 6;
+k = 2;
+
 ktotal = ceil(n/k);
 kwindow = floor(n/k);
 
 % accumilate
-runningC = 0;
-runningP = 0;
+runningC = 25;
+runningP = 10.5;
 runningErr = 0;
 errorMatrix(1:C_len, 1:P_len) = 0; % error matrix initialized to 0
 
-fold = 1;
+bestC = runningC;
+bestP = runningP;
+bestval = runningErr;
+allvalerrs = errorMatrix;
 
-while fold <= n-kwindow+1
+% fold = 1;
 
-	x_validation = xTr(:,[fold:fold+kwindow-1]);
-	x_training = xTr;
-	x_training(:,[fold:fold+kwindow-1]) = [];
-	
-	y_validation = yTr(:,[fold:fold+kwindow-1]);
-	y_training = yTr;
-	y_training(:,[fold:fold+kwindow-1]) = [];
+% while fold <= n-kwindow+1
+%   x_validation = xTr(:,[fold:fold+kwindow-1]);
+%   x_training = xTr;
+%   x_training(:,[fold:fold+kwindow-1]) = [];
 
-	% reinitialize loop variables
-	minError = 101;
-	minC = -1;
-	minP = -1;
-	tempErrorMatrix(1:C_len, 1:P_len) = 0;
+%   y_validation = yTr(:,[fold:fold+kwindow-1]);
+%   y_training = yTr;
+%   y_training(:,[fold:fold+kwindow-1]) = [];
 
-	for i = 1:C_len
-		for j=1:P_len
-			c = Cs(i);
-			kpar = paras(j);
-			[svmclassify, sv_i, alphas] = trainsvm(x_training, y_training, c, ktype, kpar);
-			guess = svmclassify(x_validation); % m x 1
+%   % reinitialize loop variables
+%   minError = 101;
+%   minC = -1;
+%   minP = -1;
+%   tempErrorMatrix(1:C_len, 1:P_len) = 0;
 
-			err = sum(sign(guess) ~= y_validation.') ./ length(guess);
-			tempErrorMatrix(i,j) = err;
+%   for i = 1:C_len
+%       for j=1:P_len
+%           c = Cs(i);
+%           kpar = paras(j);
+%           [svmclassify, sv_i, alphas] = trainsvm(x_training, y_training, c, ktype, kpar);
+%           guess = svmclassify(x_validation); % m x 1
 
-			if err < minError
-				minError = err;
-				minC = c;
-				minP = kpar;
-			end;
-		end;
-	end;
+%           err = sum(sign(guess) ~= y_validation.') ./ length(guess);
+%           tempErrorMatrix(i,j) = err;
 
-	runningErr = runningErr + minError;
-	runningC = runningC + minC;
-	runningP = runningP + minP;
-	errorMatrix = errorMatrix + tempErrorMatrix;
+%           if err < minError
+%               minError = err;
+%               minC = c;
+%               minP = kpar;
+%           end;
+%       end;
+%   end;
 
-	fold = fold+kwindow;
-end;
+%   runningErr = runningErr + minError;
+%   runningC = runningC + minC;
+%   runningP = runningP + minP;
+%   errorMatrix = errorMatrix + tempErrorMatrix;
 
-bestC = runningC ./ ktotal;
-bestP = runningP ./ ktotal;
-bestval = runningErr ./ ktotal;
-allvalerrs = errorMatrix ./ ktotal;
+%   fold = fold+kwindow;
+% end;
+
+% bestC = runningC ./ ktotal;
+% bestP = runningP ./ ktotal;
+% bestval = runningErr ./ ktotal;
+% allvalerrs = errorMatrix ./ ktotal;

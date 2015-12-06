@@ -21,15 +21,15 @@ yTr = yTr.';
 a_y = yTr.' .* alphas; % a_Y is nx1
 I = find(alphas>WeakEps & alphas<C);
 random_index = I(1);
-% y_i = yTr(random_index);
-% K_J = K(:,random_index); % K_J is nx1;
+y_i = yTr(random_index);
+K_J = K(:,random_index); % K_J is nx1;
 
-possible_alphas = sort(alphas(I));
-[n,m] = size(possible_alphas);
-median_val = possible_alphas(ceil(n/2));
-median_index = find(alphas==median_val)(1);
-y_i = yTr(median_index);
-K_J = K(:,median_index); % K_J is nx1
+% possible_alphas = sort(alphas(I));
+% [n,m] = size(possible_alphas);
+% median_val = possible_alphas(ceil(n/2));
+% median_index = find(alphas==median_val)(1);
+% y_i = yTr(median_index);
+% K_J = K(:,median_index); % K_J is nx1
 inner = a_y.' * K_J;
 yterm = y_i*inner;
 bias = (1-yterm)/y_i;
