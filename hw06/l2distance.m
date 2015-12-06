@@ -1,6 +1,6 @@
 function D=l2distance(X,Z)
 % function D=l2distance(X,Z)
-%	
+% 
 % Computes the Euclidean distance matrix. 
 % Syntax:
 % D=l2distance(X,Z)
@@ -21,7 +21,7 @@ function D=l2distance(X,Z)
 
 
 if (nargin==1) % case when there is only one input (X)
-	%% fill in code here
+  %% fill in code here
   n = columns(X);
   m = columns(X);
   
@@ -39,7 +39,7 @@ if (nargin==1) % case when there is only one input (X)
   R = diag_vector_j(ones(n,1),:);
 
 else  % case when there are two inputs (X,Z)
-	%% fill in code here
+  %% fill in code here
   n = columns(X);
   m = columns(Z);
 
