@@ -28,6 +28,8 @@ acc = validation_error(xTe, T);
 global_acc = acc;
 
 function traverse(node)	
+	% node
+
 	if T(4, node) == 0 && T(5, node) == 0
 		if T(6, node) == 0
 			return

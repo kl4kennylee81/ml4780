@@ -13,4 +13,13 @@ function preds=evalforest(F,xTe)
 %
 
 %% fill in code here
-
+m = length(F);
+% m each tree x n prediction
+[d,n] = size(xTe);
+all_preds = zeros(m,n);
+for i=1:m
+	this_preds = evaltree(F{i},xTe);
+	all_preds(i,:) = this_preds;
+end;
+preds = mode(all_preds);
+end;

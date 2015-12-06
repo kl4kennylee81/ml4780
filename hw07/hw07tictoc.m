@@ -22,26 +22,26 @@ fprintf('PRUNED: Time: %2.2fs Training accuracy %2.2f, Testing accuracy %2.2f \n
 accs=[accs [tr;te]];
 
 
-% tic;
-% F=forest(xTr,yTr,50);
-% tr=analyze('acc',yTr,evalforest(F,xTr));
-% te=analyze('acc',yTe,evalforest(F,xTe));
-% tf=toc;
-% fprintf('Forest: Time: %2.2fs Training accuracy %2.2f, Testing accuracy %2.2f\n',tf,tr,te);
-% accs=[accs [tr;te]];
+tic;
+F=forest(xTr,yTr,50);
+tr=analyze('acc',yTr,evalforest(F,xTr));
+te=analyze('acc',yTe,evalforest(F,xTe));
+tf=toc;
+fprintf('Forest: Time: %2.2fs Training accuracy %2.2f, Testing accuracy %2.2f\n',tf,tr,te);
+accs=[accs [tr;te]];
 
 
-% tic;
-% BDT=boosttree(xTr,yTr,15,4);
-% tr=analyze('acc',yTr,evalboost(BDT,xTr));
-% te=analyze('acc',yTe,evalboost(BDT,xTe));
-% tb=toc;
-% fprintf('Boost : Time: %2.2fs Training accuracy %2.2f, Testing accuracy %2.2f\n',tb,tr,te);
-% accs=[accs [tr;te]];
+tic;
+BDT=boosttree(xTr,yTr,15,4);
+tr=analyze('acc',yTr,evalboost(BDT,xTr));
+te=analyze('acc',yTe,evalboost(BDT,xTe));
+tb=toc;
+fprintf('Boost : Time: %2.2fs Training accuracy %2.2f, Testing accuracy %2.2f\n',tb,tr,te);
+accs=[accs [tr;te]];
 
-% total=tx+tp+tf+tb;
+total=tx+tp+tf+tb;
 
 
-% if total>120, fprintf('Your code is currently probably too slow.\n');end;
-% sepacc = accs;
-% accs=mean(accs(2,:));
+if total>120, fprintf('Your code is currently probably too slow.\n');end;
+sepacc = accs;
+accs=mean(accs(2,:));

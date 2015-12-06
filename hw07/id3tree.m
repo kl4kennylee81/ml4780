@@ -25,7 +25,6 @@ function T=id3tree(xTr,yTr,maxdepth,weights)
 % 6. parent (0 = root)
 
 % 2^maxdepth-1 qs
-disp("started");
 [d,n] = size(xTr);
 
 if nargin<3,
@@ -38,6 +37,7 @@ end;
 if nargin<4,
   weights=ones(1,n)./n;
 end;
+
 
 T = zeros(6,total_nodes);
 % xTr_treeIndex = ones(1,n);
