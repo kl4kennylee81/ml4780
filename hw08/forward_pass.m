@@ -14,14 +14,19 @@ function [ as,zs ] = forward_pass(W, xTr, trans_func )
 
 n=size(xTr, 2);
 
+
 % first, we add the constant weight
 zs{length(W)+1}=[xTr;ones(1,n)];
 as{length(W)+1}=xTr;
+
 % Do the forward process here:
-for i=length(W):-1:2
-	% INSERT CODE:
-	
+for i=length(W):-1:2	
+	as{i} = W{i}*zs{i+1};
+	temp = trans_func(as{i});
+	zs{i} = [temp;ones(1,n)];
 end;
 % INSERT CODE: (last one is special, no transition function)
+as{1} = W{1}*zs{2};
+zs{1} = as{1};
 end
 

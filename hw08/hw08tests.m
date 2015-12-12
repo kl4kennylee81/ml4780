@@ -29,6 +29,7 @@ catch
     failtest = true;
     addon=lasterr();
 end
+
 if failtest,
     r=r+1;
     s{length(s)+1}=['incorrect preprocessing'; addon];

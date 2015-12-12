@@ -11,4 +11,7 @@ function [xTr,xTe,u,m]=preprocess(xTr,xTe);
 % u,m - any other data should be pre-processed by x-> u*(x-m)
 %
 
-
+m = mean(xTr, 2);
+u = 1 ./ diag(std(xTr, 0, 2));
+xTr = u*(xTr - repmat(m,1,size(xTr,2)));
+xTe = u*(xTe - repmat(m,1,size(xTe,2)));

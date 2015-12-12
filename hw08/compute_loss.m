@@ -14,4 +14,6 @@ delta=zs{1}-yTr;
 n = size(yTr, 2);
 loss=0;
 % INSERT CODE HERE:
+loss = (delta * delta.') ./ (2.*n);
+
 
